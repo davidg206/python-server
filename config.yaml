@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-python-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-python-server
+  template:
+    metadata:
+      labels:  # Add labels for the Pod
+        app: my-python-server
+    spec:
+      containers:
+      - name: python-server-container
+        image: docker.io/dgodfrey206/python-server:v0.2.5
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /storage
+          name: filesystem-storage
+      volumes:
+      - name: filesystem-storage
+        persistentVolumeClaim:
+          claimName: unreal-project
